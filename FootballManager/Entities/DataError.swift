@@ -18,5 +18,4 @@ enum DataError: Error, LocalizedError {
         return "Cant get specific Player object to delete: \(type(of: self)) ::: \(#function)"
     }
   }
-
 }
