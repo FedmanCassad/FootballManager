@@ -7,6 +7,7 @@ public enum Filter  {
 protocol MainScreenViewInterface: RoutableView {
   var presenter: MainScreenPresenterInterface? { get set }
   func initialSetupUI()
-  var setNeedUpdateData: Bool { get set }
+  func updateTableView (with items: [PlayerViewModel])
   var filterStatus: Filter { get }
+
 }

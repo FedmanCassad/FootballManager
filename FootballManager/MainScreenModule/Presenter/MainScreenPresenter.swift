@@ -2,7 +2,12 @@
 import CoreData
 
 class MainScreenPresenter: NSObject, MainScreenPresenterInterface {
-  var playerViewModels: [PlayerViewModel]?
+
+  func tableViewNeedsUpdate() {
+    view?.updateTableView(with: playerViewModels)
+  }
+
+  var playerViewModels: [PlayerViewModel]!
   weak var view: MainScreenViewInterface?
   var router: RouterInterface?
   var interactor: InteractorInterface?
@@ -69,7 +74,7 @@ class MainScreenPresenter: NSObject, MainScreenPresenterInterface {
       temporaryViewModelsArray.append(viewModel)
     }
     self.playerViewModels = temporaryViewModelsArray
-    view?.setNeedUpdateData = true
+    view?.updateTableView(with: self.playerViewModels)
   }
   
   func playersDataFetchFailed(with error: DataError) {
