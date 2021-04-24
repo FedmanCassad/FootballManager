@@ -4,7 +4,7 @@ protocol MainScreenPresenterInterface: class {
   var view: MainScreenViewInterface? { get set }
   var router: RouterInterface? { get set }
   var interactor: InteractorInterface? { get set }
-  var playerViewModels: [PlayerViewModel]? { get set }
+  var playerViewModels: [PlayerViewModel]! { get set }
   func getPlayerViewModel(at index: Int) -> PlayerViewModel?
   func addPlayerButtonTapped()
   func searchButtonTapped()
@@ -14,4 +14,5 @@ protocol MainScreenPresenterInterface: class {
   func notifiedViewDidLoad()
   func notifiedViewWillAppear()
   func filterChanged(with: Filter)
+  func tableViewNeedsUpdate()
 }

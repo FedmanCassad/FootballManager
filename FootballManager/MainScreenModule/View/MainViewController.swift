@@ -11,6 +11,19 @@ class MainViewController: UIViewController {
   var presenter: MainScreenPresenterInterface?
   var tableView: UITableView!
   var segmentControl: UISegmentedControl!
+
+  lazy var diffableDataSource: UITableViewDiffableDataSource<Int, PlayerViewModel> = {
+    let dataSource = PlayersDiffableDataSource(tableView: tableView) {tableView, indexPath, item in
+      guard let cell = tableView.dequeueReusableCell(withIdentifier: "playerCell", for: indexPath) as? PlayerCell else {
+        return UITableViewCell()
+      }
+    cell.configure(with: item)
+    return cell
+  }
+    dataSource.defaultRowAnimation = .middle
+    return dataSource
+  }()
+
   var filterStatus: Filter {
     switch segmentControl.selectedSegmentIndex {
     case 0:
@@ -28,6 +41,7 @@ class MainViewController: UIViewController {
     super.viewDidLoad()
     overrideUserInterfaceStyle = .light
     presenter?.notifiedViewDidLoad()
+
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -37,11 +51,11 @@ class MainViewController: UIViewController {
   
   private func setupTableView() {
     tableView = UITableView(frame: view.bounds)
+    tableView.register(UINib(nibName: "PlayerCell", bundle: nil), forCellReuseIdentifier: "playerCell")
+    tableView.dataSource = diffableDataSource
     tableView.toAutoLayout()
-    tableView.dataSource = self
     tableView.delegate = self
     tableView.allowsSelection = false
-    tableView.register(UINib(nibName: "PlayerCell", bundle: nil), forCellReuseIdentifier: "playerCell")
   }
   
   private func setupSegmentedControl() {
@@ -77,46 +91,34 @@ class MainViewController: UIViewController {
 
 // MARK: - MainScreenViewInterface and Routable protocols adoption
 extension MainViewController: MainScreenViewInterface, RoutableView {
+  func updateTableView(with items: [PlayerViewModel]) {
+    var snapshot = NSDiffableDataSourceSnapshot<Int, PlayerViewModel>()
+    snapshot.appendSections([0])
+    snapshot.appendItems(items, toSection: 0)
+    diffableDataSource.apply(snapshot, animatingDifferences: true)
+  }
+
   
   var viewController: RoutableView? {
     return self
   }
   
-  var setNeedUpdateData: Bool {
-    get {
-      return false
-    }
-    set {
-      if newValue {
-        tableView.reloadData()
-      }
-    }
-  }
+//  var setNeedUpdateData: Bool {
+//    get {
+//      return false
+//    }
+//    set {
+//      if newValue {
+//        tableView.reloadData()
+//      }
+//    }
+//  }
   
   func initialSetupUI() {
-    setupTableView()
     setupSegmentedControl()
+    setupTableView()
     setupUI()
-  }
-}
 
-// MARK: - UITableViewDataSource essential methods realization
-extension MainViewController: UITableViewDataSource {
-  
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    let numberOfRows =  presenter?.playerViewModels?.count ?? 0
-    return numberOfRows;
-  }
-  
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if let cell = tableView.dequeueReusableCell(withIdentifier: "playerCell", for: indexPath) as? PlayerCell {
-      cell.configure(with: presenter?.getPlayerViewModel(at: indexPath.row))
-      return cell}
-    return UITableViewCell()
-  }
-  
-  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    true
   }
 }
 
@@ -127,9 +129,9 @@ extension MainViewController: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let actions = UIContextualAction(style: .destructive, title: "Удалить") {_, _, isPerformed in
-      self.presenter?.playerDeleted(at: indexPath.row)
-      tableView.deleteRows(at: [indexPath], with: .fade)
+    let actions = UIContextualAction(style: .destructive, title: "Удалить") {[weak self] _, _, isPerformed in
+      self?.presenter?.playerDeleted(at: indexPath.row)
+      self?.presenter?.tableViewNeedsUpdate()
       isPerformed(true)
     }
     let swipeActionConfiguration = UISwipeActionsConfiguration(actions: [actions])

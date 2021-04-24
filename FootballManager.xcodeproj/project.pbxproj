@@ -22,6 +22,8 @@
 		D82A37B925CB0E7F004D89A5 /* PickerViewDelegateAndDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82A37B825CB0E7F004D89A5 /* PickerViewDelegateAndDataSource.swift */; };
 		D82A37BD25CB1093004D89A5 /* TeamPickerDelegateAndDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82A37BC25CB1093004D89A5 /* TeamPickerDelegateAndDataSource.swift */; };
 		D82A37C025CB118A004D89A5 /* PositionPickerDelegateAndDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82A37BF25CB118A004D89A5 /* PositionPickerDelegateAndDataSource.swift */; };
+		D8304C742634CA5500E7B1AC /* DiffDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8304C732634CA5500E7B1AC /* DiffDataSource.swift */; };
+		D8304C772634D7DF00E7B1AC /* PlayerDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8304C762634D7DF00E7B1AC /* PlayerDiffableDataSource.swift */; };
 		D8623552260E7FB00087A1EF /* AddPlayerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8623551260E7FB00087A1EF /* AddPlayerInteractor.swift */; };
 		D8623555260E7FC00087A1EF /* AddPlayerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8623554260E7FC00087A1EF /* AddPlayerPresenter.swift */; };
 		D862355A260E812B0087A1EF /* AddPlayerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8623559260E812B0087A1EF /* AddPlayerRouter.swift */; };
@@ -70,6 +72,8 @@
 		D82A37B825CB0E7F004D89A5 /* PickerViewDelegateAndDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewDelegateAndDataSource.swift; sourceTree = "<group>"; };
 		D82A37BC25CB1093004D89A5 /* TeamPickerDelegateAndDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamPickerDelegateAndDataSource.swift; sourceTree = "<group>"; };
 		D82A37BF25CB118A004D89A5 /* PositionPickerDelegateAndDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionPickerDelegateAndDataSource.swift; sourceTree = "<group>"; };
+		D8304C732634CA5500E7B1AC /* DiffDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffDataSource.swift; sourceTree = "<group>"; };
+		D8304C762634D7DF00E7B1AC /* PlayerDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDiffableDataSource.swift; sourceTree = "<group>"; };
 		D862354C260D27840087A1EF /* FootballManagerV2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FootballManagerV2.xcdatamodel; sourceTree = "<group>"; };
 		D8623551260E7FB00087A1EF /* AddPlayerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerInteractor.swift; sourceTree = "<group>"; };
 		D8623554260E7FC00087A1EF /* AddPlayerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerPresenter.swift; sourceTree = "<group>"; };
@@ -272,6 +276,7 @@
 				D8FEE0692607496600068FB2 /* MainScreenModule */,
 				D8A1588225BA359C00287FD6 /* Model */,
 				D879FC9626225518000BEBF6 /* Resources */,
+				D8304C732634CA5500E7B1AC /* DiffDataSource.swift */,
 			);
 			path = FootballManager;
 			sourceTree = "<group>";
@@ -282,6 +287,7 @@
 				D82A377125BDAC4E004D89A5 /* FootballManager.xcdatamodeld */,
 				D82A37BC25CB1093004D89A5 /* TeamPickerDelegateAndDataSource.swift */,
 				D82A37BF25CB118A004D89A5 /* PositionPickerDelegateAndDataSource.swift */,
+				D8304C762634D7DF00E7B1AC /* PlayerDiffableDataSource.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -434,6 +440,7 @@
 				D879FC9B26225AF9000BEBF6 /* UIVIewController + FilterPlayersSegmentedControlGenerator.swift in Sources */,
 				D8FEE06F2607499B00068FB2 /* MainScreenInteractor.swift in Sources */,
 				D8F5E3C926194EA0009FC0D2 /* RoutableView.swift in Sources */,
+				D8304C742634CA5500E7B1AC /* DiffDataSource.swift in Sources */,
 				D8FEE08726077C4400068FB2 /* MainScreenInteractorInterface.swift in Sources */,
 				D8839996260BC8AC004B9F42 /* AddPlayerInteractorInterface.swift in Sources */,
 				D81F65422628D805007C956B /* SearchViewHandlingInterface.swift in Sources */,
@@ -446,6 +453,7 @@
 				D8FEE08A26077CA300068FB2 /* ServiceInterface.swift in Sources */,
 				D81F6558262BBD0F007C956B /* SearchViewControllerInterface.swift in Sources */,
 				D8623555260E7FC00087A1EF /* AddPlayerPresenter.swift in Sources */,
+				D8304C772634D7DF00E7B1AC /* PlayerDiffableDataSource.swift in Sources */,
 				D8A1588425BA35DF00287FD6 /* CoreDataService.swift in Sources */,
 				D8FEE09026079F1F00068FB2 /* RouterInterface.swift in Sources */,
 				D8DE3B61260D1EB9000DF717 /* DataError.swift in Sources */,
