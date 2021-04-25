@@ -20,7 +20,7 @@ class MainViewController: UIViewController {
     cell.configure(with: item)
     return cell
   }
-    dataSource.defaultRowAnimation = .middle
+    dataSource.defaultRowAnimation = .left
     return dataSource
   }()
 
