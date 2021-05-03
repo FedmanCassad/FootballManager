@@ -18,6 +18,7 @@ class AddPlayerRouter: AddPlayerRouterInterface {
   func push(viewController: UIViewController, animated: Bool) {
     navigationController?.pushViewController(viewController, animated: animated)
   }
+  
   func dismiss(animated: Bool) {
     navigationController?.dismiss(animated: true)
   }

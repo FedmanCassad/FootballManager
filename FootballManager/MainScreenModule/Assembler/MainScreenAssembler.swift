@@ -8,7 +8,7 @@
 import UIKit
 
 final class MainScreenAssembler: Assembler {
-  static func assemblyModule(using navigationController: UINavigationController ) -> RoutableView {
+  static func assemblyModule(using navigationController: UINavigationController? ) -> RoutableView {
     let router = MainScreenRouter()
     let presenter = MainScreenPresenter()
     let interactor = MainScreenInteractor()
@@ -20,7 +20,7 @@ final class MainScreenAssembler: Assembler {
     router.presenter = presenter
     interactor.presenter = presenter
     view.presenter = presenter
-    navigationController.viewControllers = [view as UIViewController]
+    navigationController?.viewControllers = [view as UIViewController]
     return view
   }
 }

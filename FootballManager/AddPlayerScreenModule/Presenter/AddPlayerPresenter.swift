@@ -26,7 +26,18 @@ class AddPlayerPresenter: NSObject, AddPlayerPresenterInterface {
   }
   
   func needSavePlayer() {
-    let player = prepareManagedObjectFromViewModel(of: Player.self)
+    var player: Player?
+    if view.isEditMode {
+      guard let id = view.editablePlayerID else { return }
+      do {
+        player = try interactor?.getEditablePlayer(by: id)
+      }
+      catch let error {
+        print(error.localizedDescription)
+      }
+    } else {
+      player = prepareManagedObjectFromViewModel(of: Player.self)
+    }
     player?.id = UUID()
     player?.number = view.getPlayerNumber().safeInt16()
     player?.image = view.getPlayerPhoto()

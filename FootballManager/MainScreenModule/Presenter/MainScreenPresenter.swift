@@ -1,5 +1,6 @@
 
 import CoreData
+import UIKit
 
 class MainScreenPresenter: NSObject, MainScreenPresenterInterface {
 
@@ -64,7 +65,7 @@ class MainScreenPresenter: NSObject, MainScreenPresenterInterface {
   }
   
   private func getListOfPlayers() {
-    interactor?.fetchData()
+    interactor?.fetchData(by: filterDictionary)
   }
   
   func playerDataFetched(with payload: [Player]) {
@@ -76,9 +77,18 @@ class MainScreenPresenter: NSObject, MainScreenPresenterInterface {
     self.playerViewModels = temporaryViewModelsArray
     view?.updateTableView(with: self.playerViewModels)
   }
+
+  func notifyWantsEditPlayerCard(with player: PlayerViewModel?) {
+    let addPlayerModule = AddPlayerAssembler.assemblyModule(using: router?.navigationController, for: player)
+    router?.pushController(with: addPlayerModule)
+  }
   
   func playersDataFetchFailed(with error: DataError) {
     print(error.localizedDescription)
+  }
+
+  func notifyWantChangePlayerStatus(byPlayerId id: UUID, isInPlay: Bool) {
+    interactor?.updatePlayerStatus(by: id, isInPlay: isInPlay)
   }
   
   func filterChanged(with: Filter) {
@@ -139,4 +149,12 @@ extension MainScreenPresenter: SearchViewControllerHandler {
     }
     interactor?.fetchData(by: searchDict)
   }
+}
+
+extension MainScreenPresenter: MainScreenFRCEssentialsInterface {
+  func getTableViewDataSourceReference() -> UITableViewDiffableDataSource<Int, PlayerViewModel> {
+    
+  }
+
+
 }

@@ -5,4 +5,6 @@ protocol InteractorInterface: class {
   func fetchData()
   func fetchData(by fields: [String: Any])
   func deletePlayer(by id: UUID) throws
+  func getEditablePlayer(by id: UUID) -> Player?
+  func updatePlayerStatus(by id: UUID, isInPlay: Bool)
 }

@@ -102,24 +102,14 @@ extension MainViewController: MainScreenViewInterface, RoutableView {
   var viewController: RoutableView? {
     return self
   }
-  
-//  var setNeedUpdateData: Bool {
-//    get {
-//      return false
-//    }
-//    set {
-//      if newValue {
-//        tableView.reloadData()
-//      }
-//    }
-//  }
-  
+
   func initialSetupUI() {
     setupSegmentedControl()
     setupTableView()
     setupUI()
-
   }
+
+  
 }
 
 // MARK: - UITableViewDataSource essential method realization
@@ -129,17 +119,30 @@ extension MainViewController: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let actions = UIContextualAction(style: .destructive, title: "Удалить") {[weak self] _, _, isPerformed in
+    let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") {[weak self] _, view, isPerformed in
+      view.backgroundColor = .red
       self?.presenter?.playerDeleted(at: indexPath.row)
       self?.presenter?.tableViewNeedsUpdate()
       isPerformed(true)
     }
-    let swipeActionConfiguration = UISwipeActionsConfiguration(actions: [actions])
+    let player = presenter?.playerViewModels[indexPath.row]
+    let editAction = UIContextualAction(style: .normal, title: "Edit") {[weak self] _, view, isPerformed in
+      self?.presenter?.notifyWantsEditPlayerCard(with: player)
+      isPerformed(true)
+    }
+    editAction.backgroundColor = .orange
+    let playerStatus = presenter?.getPlayerViewModel(at: indexPath.row)?.inPlay ?? true
+    let changeStatusAction = UIContextualAction(style: .normal, title: playerStatus ? "On bench" : "In play") {[weak self] _, view, isPerformed in
+      guard let playerID = self?.presenter?.getPlayerViewModel(at: indexPath.row)?.id else { return }
+      self?.presenter?.notifyWantChangePlayerStatus(byPlayerId: playerID, isInPlay: playerStatus ? false : true)
+      self?.presenter?.notifiedViewWillAppear()
+      tableView.reloadRows(at: [indexPath], with: .automatic)
+      isPerformed(true)
+      
+    }
+    changeStatusAction.backgroundColor = .purple
+    let swipeActionConfiguration = UISwipeActionsConfiguration(actions: [deleteAction, editAction, changeStatusAction])
     return swipeActionConfiguration
-  }
-  
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    UIView()
   }
 }
 

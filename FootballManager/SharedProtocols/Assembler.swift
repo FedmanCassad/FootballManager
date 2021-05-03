@@ -8,5 +8,9 @@
 import UIKit
 
 protocol Assembler {
-  static func assemblyModule(using navigationController: UINavigationController ) -> RoutableView
+  static func assemblyModule(using navigationController: UINavigationController? ) -> RoutableView
+}
+
+protocol EditableViewAssembler {
+  static func assemblyModule(using navigationController: UINavigationController?, for editingPlayer: PlayerViewModel?) -> RoutableView
 }

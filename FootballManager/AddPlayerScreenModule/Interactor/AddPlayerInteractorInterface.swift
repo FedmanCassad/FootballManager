@@ -10,5 +10,6 @@ import Foundation
 protocol AddPlayerInteractorInterface {
   var presenter: AddPlayerPresenterInterface? { get set }
   func getManagedObject<T> (of type: T.Type) -> T?
+  func getEditablePlayer(by id: UUID) throws -> Player?
   func saveChanges()
 }

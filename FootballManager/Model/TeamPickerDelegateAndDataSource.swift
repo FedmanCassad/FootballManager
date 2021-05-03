@@ -29,8 +29,7 @@ final class TeamPickerDelegateAndDataSource: NSObject, PickerViewDelegateAndData
   }
   
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    owner?.chosenTeamLabel.text = source[row]
-    owner?.alignLabels()
-    owner?.pickedTeam = source[row]
+    guard let owner = owner else { return }
+    owner.pickedTeam = source[row]
   }
 }

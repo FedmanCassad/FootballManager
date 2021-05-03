@@ -8,18 +8,26 @@
 import Foundation
 
 class AddPlayerInteractor: NSObject, AddPlayerInteractorInterface {
+
+
   weak var presenter: AddPlayerPresenterInterface?
-  private var service: CoreDataService?
+  private var service: AddPlayerServiceInterface?
   
   override init() {
     self.service = CoreDataService(modelName: "FootballManager")
   }
-  
+
   func getManagedObject<T>(of type: T.Type) -> T?  {
-    return service?.createObject(from: type)
+    let player: Player? = service?.createNSManagedPlayer()
+    return player as? T
   }
   
   func saveChanges() {
     service?.save()
+  }
+
+  func getEditablePlayer(by id: UUID) throws -> Player? {
+    guard let player: Player = try? service?.getSpecificPlayer(by: id) else { return nil }
+    return player
   }
 }

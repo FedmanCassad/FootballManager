@@ -9,6 +9,8 @@ import UIKit
 
 protocol AddPlayerViewInterface: RoutableView {
   var presenter: AddPlayerPresenterInterface? { get set }
+  var editablePlayerID: UUID? { get }
+  var isEditMode: Bool { get }
   func initialSetupUI()
   func getPlayerNumber() -> String?
   func getPlayerPhoto() -> Data?
