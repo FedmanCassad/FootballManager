@@ -29,9 +29,13 @@ class MainScreenInteractor: NSObject, InteractorInterface {
     } else {
       let request: NSFetchRequest<Player> = NSFetchRequest(entityName: "Player")
       let sortDescriptor = NSSortDescriptor(key: "number", ascending: true)
-      request.sortDescriptors = [sortDescriptor]
+      let sortDescriptorForSections = NSSortDescriptor(key: "position", ascending: true)
+      request.sortDescriptors = [sortDescriptorForSections,sortDescriptor]
       guard let context = service?.getContext() else { return }
-      playersFRC = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+      playersFRC = NSFetchedResultsController(fetchRequest: request,
+                                              managedObjectContext: context,
+                                              sectionNameKeyPath: "sectionIdentifier",
+                                              cacheName: nil)
       playersFRC.delegate = self
       do {
         try playersFRC.performFetch()
@@ -52,15 +56,20 @@ class MainScreenInteractor: NSObject, InteractorInterface {
         }
       }
     } else {
+      // Здесь применяем FRC
       let request: NSFetchRequest<Player> = NSFetchRequest(entityName: "Player")
       let sortDescriptor = NSSortDescriptor(key: "number", ascending: true)
-      request.sortDescriptors = [sortDescriptor]
+      let sortDescriptorForSections = NSSortDescriptor(key: "position", ascending: true)
+      request.sortDescriptors = [sortDescriptorForSections,sortDescriptor]
       let constructor = SearchPredicateConstructor()
       let predicates = constructor.getPredicates(by: fields)
       let compoundPredicate: NSCompoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicates)
       request.predicate = compoundPredicate
       guard let context = service?.getContext() else { return }
-      playersFRC = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+      playersFRC = NSFetchedResultsController(fetchRequest: request,
+                                              managedObjectContext: context,
+                                              sectionNameKeyPath: "sectionIdentifier",
+                                              cacheName: nil)
       playersFRC.delegate = self
       do {
         try playersFRC.performFetch()
@@ -83,7 +92,6 @@ class MainScreenInteractor: NSObject, InteractorInterface {
     let player = getEditablePlayer(by: id)
     player?.inPlay = isInPlay
     service?.save()
-    presenter?.tableViewNeedsUpdate()
   }
 
 }
@@ -94,16 +102,18 @@ extension MainScreenInteractor: NSFetchedResultsControllerDelegate {
       assertionFailure("Data source has not retrieved")
       return
     }
-    let snapshot = snapshot as NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
+    let snapshot = snapshot as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>
     let newSnapshotItems: [PlayerViewModel] = snapshot.itemIdentifiers.compactMap { itemIdentifier in
       guard let existingObject = try? controller.managedObjectContext.existingObject(with: itemIdentifier) as? Player else { return nil }
       let model = presenter?.constructPlayerViewModelFromNSManagedPlayerObject(player: existingObject)
 
       return model
     }
-    var newSnapshot = NSDiffableDataSourceSnapshot<Int, PlayerViewModel>()
-    newSnapshot.appendSections([0])
-    newSnapshot.appendItems(newSnapshotItems)
+    var newSnapshot = NSDiffableDataSourceSnapshot<String, PlayerViewModel>()
+    newSnapshot.appendSections(snapshot.sectionIdentifiers)
+    newSnapshotItems.forEach {
+      newSnapshot.appendItems([$0], toSection: $0.playerPosition)
+    }
     dataSource.apply(newSnapshot, animatingDifferences: true)
   }
 

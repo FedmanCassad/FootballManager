@@ -21,6 +21,6 @@ protocol MainScreenPresenterInterface: class, MainScreenFRCEssentialsInterface {
 }
 
 protocol MainScreenFRCEssentialsInterface {
-  func getTableViewDataSourceReference() -> UITableViewDiffableDataSource<Int, PlayerViewModel>?
+  func getTableViewDataSourceReference() -> UITableViewDiffableDataSource<String, PlayerViewModel>?
 }
 

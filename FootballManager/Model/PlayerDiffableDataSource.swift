@@ -7,9 +7,12 @@
 
 import UIKit
 
-class PlayersDiffableDataSource: UITableViewDiffableDataSource<Int, PlayerViewModel>  {
+class PlayersDiffableDataSource: UITableViewDiffableDataSource<String, PlayerViewModel>  {
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     true
+  }
+  override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    self.snapshot().sectionIdentifiers[section]
   }
 
 }

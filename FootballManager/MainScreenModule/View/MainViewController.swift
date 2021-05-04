@@ -11,19 +11,19 @@ class MainViewController: UIViewController {
   var presenter: MainScreenPresenterInterface?
   var tableView: UITableView!
   var segmentControl: UISegmentedControl!
-
-  lazy var diffableDataSource: UITableViewDiffableDataSource<Int, PlayerViewModel> = {
+  
+  lazy var diffableDataSource: UITableViewDiffableDataSource<String, PlayerViewModel> = {
     let dataSource = PlayersDiffableDataSource(tableView: tableView) {tableView, indexPath, item in
       guard let cell = tableView.dequeueReusableCell(withIdentifier: "playerCell", for: indexPath) as? PlayerCell else {
         return UITableViewCell()
       }
-    cell.configure(with: item)
-    return cell
-  }
+      cell.configure(with: item)
+      return cell
+    }
     dataSource.defaultRowAnimation = .left
     return dataSource
   }()
-
+  
   var filterStatus: Filter {
     switch segmentControl.selectedSegmentIndex {
     case 0:
@@ -41,7 +41,7 @@ class MainViewController: UIViewController {
     super.viewDidLoad()
     overrideUserInterfaceStyle = .light
     presenter?.notifiedViewDidLoad()
-
+    
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -92,24 +92,21 @@ class MainViewController: UIViewController {
 // MARK: - MainScreenViewInterface and Routable protocols adoption
 extension MainViewController: MainScreenViewInterface, RoutableView {
   func updateTableView(with items: [PlayerViewModel]) {
-    var snapshot = NSDiffableDataSourceSnapshot<Int, PlayerViewModel>()
-    snapshot.appendSections([0])
-    snapshot.appendItems(items, toSection: 0)
-    diffableDataSource.apply(snapshot, animatingDifferences: true)
+    //MARK: - This must be deprecated, but I'll leave it for awhile
+    //    var snapshot = NSDiffableDataSourceSnapshot<String, PlayerViewModel>()
+    //    snapshot.appendItems(items, toSection: 0)
+    //    diffableDataSource.apply(snapshot, animatingDifferences: true)
   }
-
   
   var viewController: RoutableView? {
     return self
   }
-
+  
   func initialSetupUI() {
     setupSegmentedControl()
     setupTableView()
     setupUI()
   }
-
-  
 }
 
 // MARK: - UITableViewDataSource essential method realization
@@ -122,21 +119,27 @@ extension MainViewController: UITableViewDelegate {
     let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") {[weak self] _, view, isPerformed in
       view.backgroundColor = .red
       self?.presenter?.playerDeleted(at: indexPath.row)
-      self?.presenter?.tableViewNeedsUpdate()
       isPerformed(true)
     }
-    let player = presenter?.playerViewModels[indexPath.row]
+    
+    var player: PlayerViewModel?
+    if let playerModels = presenter?.playerViewModels {
+      player = playerModels[indexPath.row]
+    } else   {
+      player = diffableDataSource.itemIdentifier(for: indexPath)
+    }
+    
     let editAction = UIContextualAction(style: .normal, title: "Edit") {[weak self] _, view, isPerformed in
       self?.presenter?.notifyWantsEditPlayerCard(with: player)
       isPerformed(true)
     }
+    
     editAction.backgroundColor = .orange
-    let playerStatus = presenter?.getPlayerViewModel(at: indexPath.row)?.inPlay ?? true
+    let playerStatus = diffableDataSource.itemIdentifier(for: indexPath)?.inPlay ?? true
     let changeStatusAction = UIContextualAction(style: .normal, title: playerStatus ? "On bench" : "In play") {[weak self] _, view, isPerformed in
-      guard let playerID = self?.presenter?.getPlayerViewModel(at: indexPath.row)?.id else { return }
+      guard let playerID = self?.diffableDataSource.itemIdentifier(for: indexPath)?.id else { return }
       self?.presenter?.notifyWantChangePlayerStatus(byPlayerId: playerID, isInPlay: playerStatus ? false : true)
-      self?.presenter?.notifiedViewWillAppear()
-      tableView.reloadRows(at: [indexPath], with: .automatic)
+      //      self?.presenter?.notifiedViewWillAppear()
       isPerformed(true)
       
     }

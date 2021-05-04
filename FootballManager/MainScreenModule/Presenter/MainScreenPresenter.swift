@@ -54,14 +54,14 @@ class MainScreenPresenter: NSObject, MainScreenPresenterInterface {
   }
   
   func playerDeleted(at index: Int) {
-    defer {
-      playerViewModels?.remove(at: index)
-    }
+    guard let view = view else { return }
     do {
-      try interactor?.deletePlayer(by: (playerViewModels?[index].id)!)
+      try interactor?.deletePlayer(by: view.diffableDataSource.snapshot().itemIdentifiers[index].id)
+      
     } catch let error {
       print(error.localizedDescription)
     }
+
   }
   
   private func getListOfPlayers() {
@@ -152,7 +152,7 @@ extension MainScreenPresenter: SearchViewControllerHandler {
 }
 
 extension MainScreenPresenter: MainScreenFRCEssentialsInterface {
-  func getTableViewDataSourceReference() -> UITableViewDiffableDataSource<Int, PlayerViewModel>? {
+  func getTableViewDataSourceReference() -> UITableViewDiffableDataSource<String, PlayerViewModel>? {
     return view?.diffableDataSource
   }
 

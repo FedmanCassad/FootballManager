@@ -44,6 +44,7 @@
 		D8A1588425BA35DF00287FD6 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1588325BA35DF00287FD6 /* CoreDataService.swift */; };
 		D8DE3B61260D1EB9000DF717 /* DataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DE3B60260D1EB9000DF717 /* DataError.swift */; };
 		D8F5E3C926194EA0009FC0D2 /* RoutableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F5E3C826194EA0009FC0D2 /* RoutableView.swift */; };
+		D8F625102641AD0000B78578 /* Player+KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6250F2641AD0000B78578 /* Player+KVO.swift */; };
 		D8FEE06B2607499000068FB2 /* MainScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEE06A2607499000068FB2 /* MainScreenPresenter.swift */; };
 		D8FEE06F2607499B00068FB2 /* MainScreenInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEE06E2607499B00068FB2 /* MainScreenInteractor.swift */; };
 		D8FEE072260749AE00068FB2 /* MainScreenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEE071260749AE00068FB2 /* MainScreenRouter.swift */; };
@@ -98,6 +99,7 @@
 		D8A1588325BA35DF00287FD6 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		D8DE3B60260D1EB9000DF717 /* DataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataError.swift; sourceTree = "<group>"; };
 		D8F5E3C826194EA0009FC0D2 /* RoutableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutableView.swift; sourceTree = "<group>"; };
+		D8F6250F2641AD0000B78578 /* Player+KVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Player+KVO.swift"; sourceTree = "<group>"; };
 		D8FEE06A2607499000068FB2 /* MainScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenPresenter.swift; sourceTree = "<group>"; };
 		D8FEE06E2607499B00068FB2 /* MainScreenInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenInteractor.swift; sourceTree = "<group>"; };
 		D8FEE071260749AE00068FB2 /* MainScreenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenRouter.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				D8A1588225BA359C00287FD6 /* Model */,
 				D879FC9626225518000BEBF6 /* Resources */,
 				D8304C732634CA5500E7B1AC /* DiffDataSource.swift */,
+				D8F6250F2641AD0000B78578 /* Player+KVO.swift */,
 			);
 			path = FootballManager;
 			sourceTree = "<group>";
@@ -474,6 +477,7 @@
 				D8FEE072260749AE00068FB2 /* MainScreenRouter.swift in Sources */,
 				D8FEE07B26074B0C00068FB2 /* MainScreenPresenterInterface.swift in Sources */,
 				D883999D260BCFDA004B9F42 /* AddPlayerRouterInterface.swift in Sources */,
+				D8F625102641AD0000B78578 /* Player+KVO.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
