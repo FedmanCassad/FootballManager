@@ -65,7 +65,7 @@ class MainScreenPresenter: NSObject, MainScreenPresenterInterface {
   }
   
   private func getListOfPlayers() {
-    interactor?.fetchData(by: filterDictionary)
+    interactor?.fetchData(by: filterDictionary, using: .FRC)
   }
   
   func playerDataFetched(with payload: [Player]) {
@@ -94,15 +94,15 @@ class MainScreenPresenter: NSObject, MainScreenPresenterInterface {
   func filterChanged(with: Filter) {
     switch with {
     case .all:
-      interactor?.fetchData()
+      interactor?.fetchData(using: .FRC)
     case .inPlay:
-      interactor?.fetchData(by: ["inPlay": true])
+      interactor?.fetchData(by: ["inPlay": true], using: .FRC)
     case .bench:
-      interactor?.fetchData(by: ["inPlay": false])
+      interactor?.fetchData(by: ["inPlay": false], using: .FRC)
     }
   }
   
-  private func constructPlayerViewModelFromNSManagedPlayerObject(player: Player) -> PlayerViewModel {
+   func constructPlayerViewModelFromNSManagedPlayerObject(player: Player) -> PlayerViewModel {
     let playerNumber = String(player.number),
         playerAge = String(player.age),
         playerFullName = player.fullName ?? "Noname",
@@ -147,13 +147,13 @@ extension MainScreenPresenter: SearchViewControllerHandler {
     if let team = searchView?.getTeamToSearch() {
       searchDict["team"] = team
     }
-    interactor?.fetchData(by: searchDict)
+    interactor?.fetchData(by: searchDict, using: .FRC)
   }
 }
 
 extension MainScreenPresenter: MainScreenFRCEssentialsInterface {
-  func getTableViewDataSourceReference() -> UITableViewDiffableDataSource<Int, PlayerViewModel> {
-    
+  func getTableViewDataSourceReference() -> UITableViewDiffableDataSource<Int, PlayerViewModel>? {
+    return view?.diffableDataSource
   }
 
 

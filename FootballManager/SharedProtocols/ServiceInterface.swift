@@ -14,6 +14,7 @@ protocol MainScreenServiceInterface: class {
   func fetchData(by fields: [String: Any], completionHandler: @escaping (Result<[Player], DataError>) -> ())
   func getSpecificPlayer(by id: UUID) throws -> Player
   func save()
+  func getContext() -> NSManagedObjectContext
 }
 
 protocol AddPlayerServiceInterface: class {
