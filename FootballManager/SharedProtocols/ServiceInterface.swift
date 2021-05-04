@@ -12,9 +12,13 @@ protocol MainScreenServiceInterface: class {
   func deletePlayer(by id: UUID) throws
   func fetchData(completionHandler: @escaping (Result<[Player], DataError>) -> ())
   func fetchData(by fields: [String: Any], completionHandler: @escaping (Result<[Player], DataError>) -> ())
+  func getSpecificPlayer(by id: UUID) throws -> Player
+  func save()
+  func getContext() -> NSManagedObjectContext
 }
 
 protocol AddPlayerServiceInterface: class {
-  func createObject<T>(from entity: T.Type) -> T
+  func createNSManagedPlayer() -> Player
   func save()
+  func getSpecificPlayer(by id: UUID) throws -> Player
 }

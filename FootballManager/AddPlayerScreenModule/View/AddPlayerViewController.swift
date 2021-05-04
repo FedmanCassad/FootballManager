@@ -12,6 +12,25 @@ class AddPlayerViewController: UIViewController {
   private var addPlayerView: AddPlayerSubview = Bundle.main.loadNibNamed("AddPlayerSubview", owner: self, options: nil)?.first as! AddPlayerSubview
   private var segmentedControl: UISegmentedControl = .instantiatePlayersFilterSC(type: .compact)
   private var imagePicker: UIImagePickerController = .init()
+  var editablePlayerID: UUID?
+  var isEditMode: Bool {
+    editablePlayerID != nil
+  }
+
+  convenience init(editModeFor player: PlayerViewModel?) {
+    self.init()
+    guard let player = player else { return }
+    addPlayerView.ageTextField.text = player.playerAge
+    addPlayerView.playerNumberTextField.text = player.playerNumber
+    addPlayerView.playerPhotoImageView.image = UIImage(data: player.playerPhoto!)
+    addPlayerView.pickedTeam = player.playerTeam
+    addPlayerView.pickedPosition = player.playerPosition
+    addPlayerView.nameTextField.text = player.playerFullName
+    addPlayerView.nationalityTextField.text = player.playerNationality
+    segmentedControl.selectedSegmentIndex = player.inPlay ? 0 : 1
+    editablePlayerID = player.id
+    addPlayerView.checkTextFieldsToDoNotBeingEmpty()
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()

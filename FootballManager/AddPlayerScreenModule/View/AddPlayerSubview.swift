@@ -17,8 +17,16 @@ final class AddPlayerSubview: UIView {
   @IBOutlet weak var chooseTeamButton: UIButton!
   @IBOutlet weak var choosePositionButton: UIButton!
   @IBOutlet weak var saveButton: UIButton!
-  var pickedPosition: String?
-  var pickedTeam: String?
+  var pickedPosition: String? {
+    willSet {
+      choosePositionButton.setTitle(newValue, for: .normal)
+    }
+  }
+  var pickedTeam: String? {
+    willSet {
+      chooseTeamButton.setTitle(newValue, for: .normal)
+    }
+  }
   private var teamDataSource: TeamPickerDelegateAndDataSource!
   private var positionDataSource: PositionPickerDelegateAndDataSource!
   
@@ -40,13 +48,11 @@ final class AddPlayerSubview: UIView {
     guard let numberText = playerNumberTextField.text,
           let ageText = ageTextField.text,
           let nameText = nameTextField.text,
-          let nationalityText = nationalityTextField.text,
-          let chosenTeamLabelText = chosenTeamLabel.text,
-          let chosenPositionLabelText = chosenPositionLabel.text
+          let nationalityText = nationalityTextField.text
     else {
       return true
     }
-    return numberText.isEmpty || ageText.isEmpty || nameText.isEmpty || nationalityText.isEmpty || chosenPositionLabelText.isEmpty || chosenTeamLabelText.isEmpty
+    return numberText.isEmpty || ageText.isEmpty || nameText.isEmpty || nationalityText.isEmpty || pickedPosition == nil || pickedTeam == nil
   }
   
   override init(frame: CGRect) {
@@ -104,14 +110,10 @@ extension AddPlayerSubview {
     let picker = UIPickerView()
     switch sender.tag {
     case 0:
-      chooseTeamButton.isHidden = true
-      addPickerResultingLabels(label: chosenTeamLabel, at: chooseTeamButton)
       setUpPickerView (picker: picker, delegateAndDataSource: teamDataSource)
       pickedTeam = teamDataSource.source[picker.selectedRow(inComponent: 0)]
       chosenTeamLabel.text = teamDataSource.source[picker.selectedRow(inComponent: 0)]
     case 1:
-      choosePositionButton.isHidden = true
-      addPickerResultingLabels(label: chosenPositionLabel, at: choosePositionButton)
       setUpPickerView (picker: picker, delegateAndDataSource: positionDataSource)
       pickedPosition = positionDataSource.source[picker.selectedRow(inComponent: 0)]
       chosenPositionLabel.text = positionDataSource.source[picker.selectedRow(inComponent: 0)]
@@ -159,5 +161,13 @@ extension AddPlayerSubview {
       }
     }
     checkTextFieldsToDoNotBeingEmpty()
+  }
+}
+
+// MARK: - Smooth updating button sizes depending on content width
+extension AddPlayerSubview {
+  func updateButtonsWidth(button: UIButton, oldWidth: CGFloat, newWidth: CGFloat) {
+    let diff = newWidth - oldWidth
+    button.frame.size.width += diff
   }
 }

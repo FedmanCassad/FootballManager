@@ -10,7 +10,7 @@ import UIKit
 final class PositionPickerDelegateAndDataSource: NSObject, PickerViewDelegateAndDataSource {
   typealias Item = String
   var source: [Item] = ["Вратарь", "Защитник", "Полузащитник", "Нападающий"]
-  let owner: AddPlayerSubview
+  private weak var owner: AddPlayerSubview?
   
   init(owner: AddPlayerSubview) {
     self.owner = owner
@@ -29,9 +29,8 @@ final class PositionPickerDelegateAndDataSource: NSObject, PickerViewDelegateAnd
   }
   
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    owner.chosenPositionLabel.text = source[row]
-    owner.chosenPositionLabel.frame.size.width = owner.chosenPositionLabel.intrinsicContentSize.width
-    owner.alignLabels()
+    guard let owner = owner else { return }
     owner.pickedPosition = source[row]
   }
+  
 }

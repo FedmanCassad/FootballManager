@@ -1,6 +1,6 @@
-import Foundation
+import UIKit
 
-protocol MainScreenPresenterInterface: class {
+protocol MainScreenPresenterInterface: class, MainScreenFRCEssentialsInterface {
   var view: MainScreenViewInterface? { get set }
   var router: RouterInterface? { get set }
   var interactor: InteractorInterface? { get set }
@@ -15,4 +15,12 @@ protocol MainScreenPresenterInterface: class {
   func notifiedViewWillAppear()
   func filterChanged(with: Filter)
   func tableViewNeedsUpdate()
+  func notifyWantsEditPlayerCard(with player: PlayerViewModel?)
+  func notifyWantChangePlayerStatus(byPlayerId id: UUID, isInPlay: Bool)
+  func constructPlayerViewModelFromNSManagedPlayerObject(player: Player) -> PlayerViewModel
 }
+
+protocol MainScreenFRCEssentialsInterface {
+  func getTableViewDataSourceReference() -> UITableViewDiffableDataSource<Int, PlayerViewModel>?
+}
+

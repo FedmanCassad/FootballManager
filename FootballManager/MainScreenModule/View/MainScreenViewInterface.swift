@@ -6,8 +6,8 @@ public enum Filter  {
 
 protocol MainScreenViewInterface: RoutableView {
   var presenter: MainScreenPresenterInterface? { get set }
+  var filterStatus: Filter { get }
+  var diffableDataSource: UITableViewDiffableDataSource<Int, PlayerViewModel> { get }
   func initialSetupUI()
   func updateTableView (with items: [PlayerViewModel])
-  var filterStatus: Filter { get }
-
 }

@@ -7,13 +7,13 @@
 
 import CoreData
 
-final class CoreDataService {
+final class CoreDataService: NSObject {
   private let modelName: String
   private let searchPredicatesConstructor = SearchPredicateConstructor()
-  
   //MARK: - Initialization
   init(modelName: String) {
     self.modelName = modelName
+
   }
   
   lazy private var container: NSPersistentContainer = {
@@ -102,21 +102,22 @@ final class CoreDataService {
 }
 
 extension CoreDataService: MainScreenServiceInterface {
-  func fetchData<T: NSManagedObject>(by fields: [String : Any], completionHandler: @escaping (Result<[T], DataError>) -> ()) {
+
+  func fetchData (by fields: [String : Any], completionHandler: @escaping (Result<[Player], DataError>) -> ()) {
     let predicates = searchPredicatesConstructor.getPredicates(by: fields)
     if predicates.count == 1 {
       guard let predicate = predicates.first else {
         completionHandler(.failure(.fetchError))
         return
       }
-      guard let players = fetchData(for: T.self, with: predicate) else {
+      guard let players = fetchData(for: Player.self, with: predicate) else {
         completionHandler(.failure(.fetchError))
         return
       }
       completionHandler(.success(players))
     } else {
       let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicates)
-      guard  let players = fetchData(for: T.self, with: compoundPredicate) else {
+      guard  let players = fetchData(for: Player.self, with: compoundPredicate) else {
         completionHandler(.failure(DataError.fetchError))
         return
       }
@@ -132,16 +133,32 @@ extension CoreDataService: MainScreenServiceInterface {
     completionHandler(.success(playersData))
   }
   
-  func deletePlayer(by id: UUID) throws  {
+  func deletePlayer(by id: UUID) throws {
     let predicate = NSPredicate(format: "id == %@", id.uuidString)
     guard let specificPlayer = fetchData(for: Player.self, with: predicate)?.first else {
       throw DataError.errorDeletingPlayer
     }
     deleteObject(object: specificPlayer)
   }
+
+  // MARK: This must be shared method
+  func getSpecificPlayer(by id: UUID) throws -> Player {
+    let predicate = NSPredicate(format: "id == %@", id.uuidString)
+    guard let specificPlayer = fetchData(for: Player.self, with: predicate)?.first else {
+      throw DataError.errorDeletingPlayer
+    }
+    return specificPlayer
+  }
 }
 
+extension CoreDataService: AddPlayerServiceInterface {
+  func createNSManagedPlayer() -> Player {
+    guard let player = self.createObject(from: Player.self) else { return Player()}
+    return player
+  }
 
+
+}
 
 class SearchPredicateConstructor {
   func getPredicates(by fields: [String: Any]) -> [NSPredicate] {
