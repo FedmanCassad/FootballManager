@@ -13,7 +13,6 @@ final class CoreDataService: NSObject {
   //MARK: - Initialization
   init(modelName: String) {
     self.modelName = modelName
-
   }
   
   lazy private var container: NSPersistentContainer = {

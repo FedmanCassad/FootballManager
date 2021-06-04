@@ -46,6 +46,8 @@ class MainViewController: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    setupConstraints()
+
     presenter?.notifiedViewWillAppear()
   }
   
@@ -81,7 +83,6 @@ class MainViewController: UIViewController {
     overrideUserInterfaceStyle = .light
     view.addSubview(segmentControl)
     view.addSubview(tableView)
-    setupConstraints()
     tableView.backgroundColor = .white
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAddPlayerController))
     navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchButtonTapped))
@@ -93,9 +94,11 @@ class MainViewController: UIViewController {
 extension MainViewController: MainScreenViewInterface, RoutableView {
   func updateTableView(with items: [PlayerViewModel]) {
     //MARK: - This must be deprecated, but I'll leave it for awhile
-    //    var snapshot = NSDiffableDataSourceSnapshot<String, PlayerViewModel>()
-    //    snapshot.appendItems(items, toSection: 0)
-    //    diffableDataSource.apply(snapshot, animatingDifferences: true)
+        var snapshot = NSDiffableDataSourceSnapshot<String, PlayerViewModel>()
+    for (index, value) in items.enumerated() {
+      snapshot.appendItems([value], toSection: value.playerPosition)
+    }
+        diffableDataSource.apply(snapshot, animatingDifferences: true)
   }
   
   var viewController: RoutableView? {

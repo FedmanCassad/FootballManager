@@ -93,7 +93,6 @@ class MainScreenInteractor: NSObject, InteractorInterface {
     player?.inPlay = isInPlay
     service?.save()
   }
-
 }
 
 extension MainScreenInteractor: NSFetchedResultsControllerDelegate {
@@ -106,7 +105,6 @@ extension MainScreenInteractor: NSFetchedResultsControllerDelegate {
     let newSnapshotItems: [PlayerViewModel] = snapshot.itemIdentifiers.compactMap { itemIdentifier in
       guard let existingObject = try? controller.managedObjectContext.existingObject(with: itemIdentifier) as? Player else { return nil }
       let model = presenter?.constructPlayerViewModelFromNSManagedPlayerObject(player: existingObject)
-
       return model
     }
     var newSnapshot = NSDiffableDataSourceSnapshot<String, PlayerViewModel>()
@@ -116,5 +114,4 @@ extension MainScreenInteractor: NSFetchedResultsControllerDelegate {
     }
     dataSource.apply(newSnapshot, animatingDifferences: true)
   }
-
 }
